@@ -12,7 +12,7 @@ CREATE TABLE Branches (
 );
 
 CREATE TABLE Courses (
-	code TEXT PRIMARY KEY,
+	code CHAR(6) PRIMARY KEY,
 	name TEXT NOT NULL,
 	credits FLOAT NOT NULL,
 	department TEXT NOT NULL,
@@ -20,17 +20,17 @@ CREATE TABLE Courses (
 );
 
 CREATE TABLE LimitedCourses (
-	code TEXT PRIMARY KEY,
+	code CHAR(6) PRIMARY KEY,
 	capacity INT NOT NULL,
 	FOREIGN KEY (code) REFERENCES Courses(code)
 );
 
 CREATE TABLE StudentBranches (
 	student CHAR(10) PRIMARY KEY,
-	name TEXT NOT NULL,
+	branch TEXT NOT NULL,
 	program TEXT NOT NULL,
 	FOREIGN KEY (student) REFERENCES Students(idnr),
-	FOREIGN KEY (name, program) REFERENCES Branches(name,program)
+	FOREIGN KEY (branch, program) REFERENCES Branches(branch,program)
 );
 
 CREATE TABLE Classifications (
@@ -38,7 +38,7 @@ CREATE TABLE Classifications (
 );
 
 CREATE TABLE Classified (
-	course TEXT,
+	course CHAR(6),
 	classification TEXT,
 	PRIMARY KEY (course,classification),
 	FOREIGN KEY (course) REFERENCES Courses(code),
@@ -46,14 +46,14 @@ CREATE TABLE Classified (
 );
 
 CREATE TABLE MandatoryProgram (
-	course TEXT,
+	course CHAR(6),
 	program TEXT,
 	PRIMARY KEY (course,program),
 	FOREIGN KEY (course) REFERENCES Courses(code)
 );
 
 CREATE TABLE MandatoryBranch (
-	course TEXT,
+	course CHAR(6),
 	branch TEXT, 
 	program TEXT,
 	PRIMARY KEY (course,branch,program),
@@ -62,7 +62,7 @@ CREATE TABLE MandatoryBranch (
 );
 
 CREATE TABLE RecommendedBranch (
-	course TEXT,
+	course CHAR(6),
 	branch TEXT,
 	program TEXT,
 	PRIMARY KEY (course,branch,program),
@@ -72,7 +72,7 @@ CREATE TABLE RecommendedBranch (
 
 CREATE TABLE Registered (
 	student CHAR(10),
-	course TEXT,
+	course CHAR(6),
 
 	PRIMARY KEY (student, course),
 	FOREIGN KEY (student) REFERENCES Students(idnr),
@@ -81,7 +81,7 @@ CREATE TABLE Registered (
 
 CREATE TABLE Taken (
 	student CHAR(10),
-	course TEXT,
+	course CHAR(6),
 	grade CHAR(1) NOT NULL,
 	CHECK (grade = '3' OR grade = '4' OR grade = '5' OR grade = 'U'),
 
@@ -92,7 +92,7 @@ CREATE TABLE Taken (
 
 CREATE TABLE WaitingList (
 	student CHAR(10),
-	course TEXT,
+	course CHAR(6),
 	position INT NOT NULL,
 	CHECK (position >= 0),
 
