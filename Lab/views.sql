@@ -1,8 +1,8 @@
-CREATE OR REPLACE VIEW BasicInformation AS(
-	SELECT Students.idnr, Students.name, Students.login, Students.program,
-	StudentBranches.name AS branch FROM Students,StudentBranches
-	WHERE Students.idnr = StudentBranches.student
+CREATE VIEW BasicInformation AS (
+	SELECT Students.idnr, Students.name, Students.login, Students.program, StudentBranches.name as branch 
+	FROM Students FULL OUTER JOIN StudentBranches ON Students.idnr = StudentBranches.student
 );
+
 
 CREATE OR REPLACE VIEW FinishedCourses AS(
 	SELECT Taken.student, Taken.course, Taken.grade, Courses.credits
