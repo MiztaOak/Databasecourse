@@ -1,5 +1,5 @@
 CREATE TABLE Students (
-	idnr INT PRIMARY KEY,
+	idnr CHAR(10) PRIMARY KEY,
 	name TEXT NOT NULL, 
 	login TEXT NOT NULL,
 	program TEXT NOT NULL
@@ -26,7 +26,7 @@ CREATE TABLE LimitedCourses (
 );
 
 CREATE TABLE StudentBranches (
-	student INT PRIMARY KEY,
+	student CHAR(10) PRIMARY KEY,
 	name TEXT NOT NULL,
 	program TEXT NOT NULL,
 	FOREIGN KEY (student) REFERENCES Students(idnr),
@@ -71,7 +71,7 @@ CREATE TABLE RecommendedBranch (
 );
 
 CREATE TABLE Registered (
-	student INT,
+	student CHAR(10),
 	course TEXT,
 
 	PRIMARY KEY (student, course),
@@ -80,7 +80,7 @@ CREATE TABLE Registered (
 );
 
 CREATE TABLE Taken (
-	student INT,
+	student CHAR(10),
 	course TEXT,
 	grade CHAR(1) NOT NULL,
 	CHECK (grade = '3' OR grade = '4' OR grade = '5' OR grade = 'U'),
@@ -91,7 +91,7 @@ CREATE TABLE Taken (
 );
 
 CREATE TABLE WaitingList (
-	student INT,
+	student CHAR(10),
 	course TEXT,
 	position INT NOT NULL,
 	CHECK (position >= 0),
