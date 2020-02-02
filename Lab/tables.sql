@@ -30,7 +30,7 @@ CREATE TABLE StudentBranches (
 	branch TEXT NOT NULL,
 	program TEXT NOT NULL,
 	FOREIGN KEY (student) REFERENCES Students(idnr),
-	FOREIGN KEY (branch, program) REFERENCES Branches(branch,program)
+	FOREIGN KEY (branch, program) REFERENCES Branches(name,program)
 );
 
 CREATE TABLE Classifications (
