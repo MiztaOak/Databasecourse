@@ -1,0 +1,47 @@
+/*
+	p = program
+	d = department
+	s = student
+	c = course
+	class = classification
+*/
+Domain(
+	idnr,
+	sName,
+	login,
+	pName,
+	pAbr,
+	dName,
+	dAbr
+	bName,
+	cCode,
+	cName,
+	credits,
+	department,
+	capacity,
+	mpProgram,
+	className,
+	position,
+	grade,
+);
+
+pName -> dName //ett program flera departments
+pName -> pAbr
+dName -> dAbr
+dAbr -> dName
+idnr -> pName
+idnr -> bname //may be null
+idnr -> sname
+idnr -> login
+ccode -> dName
+ccode -> cname
+ccode -> credits
+ccode -> capacity //may be null
+idnr, ccode -> grade //may be null
+ccode -> className //may be more that one classification
+ccode -> cCode //for prereq
+ccode, idnr -> position
+ccode, position -> idnr
+bName , pName -> cCode
+ccode -> dName
+
