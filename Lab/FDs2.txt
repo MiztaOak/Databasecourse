@@ -1,0 +1,134 @@
+idnr pName pAbr dName bName cCode credits capacity className preReq grade position
+
+pName ->> dName
+pName -> pAbr
+idnr -> pName bName
+cCode -> dName credits capacity
+cCode ->> className 
+bName pName ->> cCode
+pName ->> cCode
+
+cCode ->> preReq
+preReq ->> cCode
+
+idnr cCode -> grade
+
+cCode idnr -> position
+position cCode -> idnr
+
+idnr ->> cCode
+
+
+
+____
+
+
+1. Attributes:
+cCode dName credits capacity
+Keys:
+cCode
+
+Functional dependencies:
+cCode -> dName
+cCode -> credits
+cCode -> capacity
+cCode capacity -> dName
+cCode capacity -> credits
+cCode credits -> dName
+cCode credits -> capacity
+cCode credits capacity -> dName
+cCode dName -> credits
+cCode dName -> capacity
+cCode dName capacity -> credits
+cCode dName credits -> capacity
+
+
+
+2. Attributes:
+preReq cCode
+Keys:
+preReq
+
+Functional dependencies:
+preReq -> cCode
+
+Multivalued dependencies:
+cCode ->> preReq
+
+
+
+3. Attributes:
+pName pAbr
+Keys:
+pName
+
+Functional dependencies:
+pName -> pAbr
+
+
+
+4. Attributes:
+idnr login sName pName bName
+Keys:
+idnr
+
+Functional dependencies:
+idnr -> login
+idnr -> sName
+idnr -> pName
+idnr -> bName
+idnr bName -> login
+idnr bName -> sName
+idnr bName -> pName
+idnr pName -> login
+idnr pName -> sName
+idnr pName -> bName
+idnr pName bName -> login
+idnr pName bName -> sName
+idnr sName -> login
+idnr sName -> pName
+idnr sName -> bName
+idnr sName bName -> login
+idnr sName bName -> pName
+idnr sName pName -> login
+idnr sName pName -> bName
+idnr sName pName bName -> login
+idnr login -> sName
+idnr login -> pName
+idnr login -> bName
+idnr login bName -> sName
+idnr login bName -> pName
+idnr login pName -> sName
+idnr login pName -> bName
+idnr login pName bName -> sName
+idnr login sName -> pName
+idnr login sName -> bName
+idnr login sName bName -> pName
+idnr login sName pName -> bName
+
+
+
+5. Attributes:
+preReq position idnr taken
+Keys:
+preReq idnr
+preReq position
+
+Functional dependencies:
+preReq idnr -> position
+preReq idnr -> taken
+preReq idnr taken -> position
+preReq position -> idnr
+preReq position -> taken
+preReq position taken -> idnr
+preReq position idnr -> taken
+
+
+
+6. Attributes:
+className preReq position
+Keys:
+className preReq position
+
+Functional dependencies:
+none
