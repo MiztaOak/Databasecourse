@@ -47,5 +47,4 @@ cCode -> className
 cCode idnr -> position
 cCode position -> idnr
 bName pName -> cCode
-cCode -> dName
 */
