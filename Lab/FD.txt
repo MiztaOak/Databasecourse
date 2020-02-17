@@ -5,43 +5,47 @@
 	c = course
 	class = classification
 */
-Domain(
-	idnr,
-	sName,
-	login,
-	pName,
-	pAbr,
-	dName,
-	dAbr
-	bName,
-	cCode,
-	cName,
-	credits,
-	department,
-	capacity,
-	mpProgram,
-	className,
-	position,
-	grade,
-);
+Domain(idnr sName login pName pAbr dName dAbr bName cCode cName credits department capacity mpProgram className position grade)
 
 pName -> dName //ett program flera departments
 pName -> pAbr
 dName -> dAbr
 dAbr -> dName
 idnr -> pName
-idnr -> bname //may be null
-idnr -> sname
+idnr -> bName //may be null
+idnr -> sName
 idnr -> login
-ccode -> dName
-ccode -> cname
-ccode -> credits
-ccode -> capacity //may be null
-idnr, ccode -> grade //may be null
-ccode -> className //may be more that one classification
-ccode -> cCode //for prereq
-ccode, idnr -> position
-ccode, position -> idnr
-bName , pName -> cCode
-ccode -> dName
+cCode -> dName
+cCode -> cName
+cCode -> credits
+cCode -> capacity //may be null
+idnr cCode -> grade //may be null
+cCode -> className //may be more that one classification
+cCode idnr -> position
+ccode position -> idnr
+bName pName -> cCode
+cCode -> dName
 
+/*
+Input till programet 
+idnr sName login pName pAbr dName dAbr bName cCode cName credits department capacity mpProgram className position grade
+
+pName -> dName
+pName -> pAbr
+dName -> dAbr
+dAbr -> dName
+idnr -> pName
+idnr -> bName
+idnr -> sName
+idnr -> login
+cCode -> dName
+cCode -> cName
+cCode -> credits
+cCode -> capacity 
+cCode idnr -> grade 
+cCode -> className 
+cCode idnr -> position
+cCode position -> idnr
+bName pName -> cCode
+cCode -> dName
+*/
