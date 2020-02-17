@@ -5,7 +5,7 @@
 	c = course
 	class = classification
 */
-Domain(idnr sName login pName pAbr dName dAbr bName cCode cName credits department capacity mpProgram className position grade)
+Domain(idnr sName login pName pAbr dName dAbr bName cCode cName credits capacity className position grade)
 
 pName -> dName //ett program flera departments
 pName -> pAbr
@@ -28,7 +28,7 @@ cCode -> dName
 
 /*
 Input till programet 
-idnr sName login pName pAbr dName dAbr bName cCode cName credits department capacity mpProgram className position grade
+idnr sName login pName pAbr dName dAbr bName cCode cName credits capacity className position grade
 
 pName -> dName
 pName -> pAbr
