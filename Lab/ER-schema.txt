@@ -1,10 +1,10 @@
 Students(_idnr_,name,login)
 
-StudentProgram(_student_, program)
+BelongsTo(_student_, program)
 	student -> Student.idnr
 	program -> Programs.name
 
-StudentBranch(_idnr_, name, program)
+StudentBranches(_idnr_, name, program)
 	name -> Branches.name
 	program -> Branches.program
 
