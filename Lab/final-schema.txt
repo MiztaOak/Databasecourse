@@ -1,8 +1,10 @@
 Students(_idnr_,name,login)
+	login UNIQUE
 
 StudentProgram(_student_, program)
 	student -> Student.idnr
 	program -> Programs.name
+	(student,program) UNIQUE
 
 StudentBranch(_idnr_, name, program)
 	name -> Branches.name
@@ -17,7 +19,7 @@ Prerequisite(_course_, _prerequisite_)
 WaitingList(_course_, _student_, position)
 	course -> Courses.code
 	student -> Students.idnr
---(course,position) UNIQUE
+	(course,position) UNIQUE
 
 Registred(_course_, _student_)
 	course -> Courses.code
@@ -41,7 +43,7 @@ Classified(_classification_, _course_)
 	course -> Courses.code
 
 Departments(_name_, abr)
--- abr UNIQUE
+	abr UNIQUE
 
 DepartmentHosts(_department_, _program_)
 	department -> Department.name

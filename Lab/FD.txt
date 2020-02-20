@@ -23,5 +23,8 @@ pName -> cCode
 idnr cCode -> registered
 cCode -> cCode
 
+or
+cCode -> prereq
+
 //något mer som ger idnr, mindre från tec mer från irl
 //user foreign key contraint out side the box för correct branch (multi foreign key)

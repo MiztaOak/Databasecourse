@@ -3,13 +3,41 @@ CREATE TABLE Students (
 	name TEXT NOT NULL, 
 	login TEXT NOT NULL,
 	program TEXT NOT NULL,
-	UNIQUE(idnr,program)
+	UNIQUE(idnr,program),
+	FOREIGN KEY (program) REFERENCES Programs(name)
+);
+
+CREATE TABLE StudentProgram( --behövs detta då all students har ett program 
+	student CHAR(10) PRIMARY KEY,
+	program TEXT NOT NULL,
+	UNIQUE(student,program),
+	FOREIGN KEY (student) REFERENCES Students(idnr),
+	FOREIGN KEY (Programs) REFERENCES Programs(name)
+);
+
+CREATE TABLE Departments(
+	name TEXT PRIMARY KEY,
+	abr TEXT UNIQUE NOT NULL 
+);
+
+CREATE TABLE Programs(
+	name TEXT PRIMARY KEY,
+	abr TEXT UNIQUE
+);
+
+CREATE TABLE DepartmentHosts(
+	department TEXT,
+	program TEXT,
+	PRIMARY KEY (department,program),
+	FOREIGN KEY (department) REFERENCES Departments(name),
+	FOREIGN KEY (program) REFERENCES Programs(name)
 );
 
 CREATE TABLE Branches (
 	name TEXT NOT NULL,
 	program TEXT NOT NULL,
-	PRIMARY KEY(name, program)
+	PRIMARY KEY(name, program),
+	FOREIGN KEY (program) REFERENCES Programs(program)
 );
 
 CREATE TABLE Courses (
@@ -24,6 +52,20 @@ CREATE TABLE LimitedCourses (
 	code CHAR(6) PRIMARY KEY,
 	capacity INT NOT NULL,
 	FOREIGN KEY (code) REFERENCES Courses(code)
+);
+
+CREATE TABLE CoursesGivenBy( --should this not be in course all courses are given by a department
+	course CHAR(6) PRIMARY KEY,
+	department TEXT NOT NULL,
+	FOREIGN KEY (department) REFERENCES Departments(name)
+);
+
+CREATE TABLE Prerequisites (
+	course CHAR(6),
+	prerequist CHAR(6) NOT NULL,
+	PRIMARY KEY (course,prerequist),
+	FOREIGN KEY (course) REFERENCES Courses(code),
+	FOREIGN KEY (prerequist) REFERENCES Courses(code)
 );
 
 CREATE TABLE StudentBranches (
@@ -50,7 +92,8 @@ CREATE TABLE MandatoryProgram (
 	course CHAR(6),
 	program TEXT,
 	PRIMARY KEY (course,program),
-	FOREIGN KEY (course) REFERENCES Courses(code)
+	FOREIGN KEY (course) REFERENCES Courses(code),
+	FOREIGN KEY (program) REFERENCES Programs(name)
 );
 
 CREATE TABLE MandatoryBranch (
@@ -96,7 +139,7 @@ CREATE TABLE WaitingList (
 	course CHAR(6),
 	position INT NOT NULL,
 	CHECK (position >= 0),
-
+	UNIQUE(course,position),
 	PRIMARY KEY (student, course),
 	FOREIGN KEY (student) REFERENCES Students(idnr),
 	FOREIGN KEY (course) REFERENCES LimitedCourses(code)

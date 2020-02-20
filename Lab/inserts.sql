@@ -1,3 +1,13 @@
+INSERT INTO Departments VALUES ('Department1','d1');
+INSERT INTO Departments VALUES ('Department2','d2');
+
+INSERT INTO Programs VALUES ('Prog1','p1');
+INSERT INTO Programs VALUES ('Prog2','p1');
+
+INSERT INTO DepartmentHosts VALUES ('Department1','Prog1');
+INSERT INTO DepartmentHosts VALUES ('Department2','Prog1');
+INSERT INTO DepartmentHosts VALUES ('Department1','Prog2');
+
 INSERT INTO Branches VALUES ('B1','Prog1');
 INSERT INTO Branches VALUES ('B2','Prog1');
 INSERT INTO Branches VALUES ('B1','Prog2');
