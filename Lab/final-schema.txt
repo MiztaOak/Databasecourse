@@ -17,6 +17,7 @@ Prerequisite(_course_, _prerequisite_)
 WaitingList(_course_, _student_, position)
 	course -> Courses.code
 	student -> Students.idnr
+--(course,position) UNIQUE
 
 Registred(_course_, _student_)
 	course -> Courses.code
@@ -40,6 +41,7 @@ Classified(_classification_, _course_)
 	course -> Courses.code
 
 Departments(_name_, abr)
+-- abr UNIQUE
 
 DepartmentHosts(_department_, _program_)
 	department -> Department.name
@@ -63,4 +65,3 @@ MandatoryBranch(_branch_, _program_, _course_)
 	branch -> Branches.name
 	program -> Branches.program
 	course -> Courses.code
-
