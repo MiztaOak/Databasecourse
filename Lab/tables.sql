@@ -2,12 +2,10 @@ CREATE TABLE Students (
 	idnr CHAR(10) PRIMARY KEY,
 	name TEXT NOT NULL, 
 	login TEXT NOT NULL,
-	program TEXT NOT NULL,
-	UNIQUE(idnr,program),
 	FOREIGN KEY (program) REFERENCES Programs(name)
 );
 
-CREATE TABLE StudentProgram( --behövs detta då all students har ett program 
+CREATE TABLE StudentProgram(
 	student CHAR(10) PRIMARY KEY,
 	program TEXT NOT NULL,
 	UNIQUE(student,program),
@@ -22,7 +20,7 @@ CREATE TABLE Departments(
 
 CREATE TABLE Programs(
 	name TEXT PRIMARY KEY,
-	abr TEXT UNIQUE
+	abr TEXT NOT NULL
 );
 
 CREATE TABLE DepartmentHosts(
@@ -44,8 +42,7 @@ CREATE TABLE Courses (
 	code CHAR(6) PRIMARY KEY,
 	name TEXT NOT NULL,
 	credits FLOAT NOT NULL,
-	department TEXT NOT NULL,
-	CHECK (credits >= 0)
+	CHECK (credits >= 0),
 );
 
 CREATE TABLE LimitedCourses (
@@ -54,7 +51,7 @@ CREATE TABLE LimitedCourses (
 	FOREIGN KEY (code) REFERENCES Courses(code)
 );
 
-CREATE TABLE CoursesGivenBy( --should this not be in course all courses are given by a department
+CREATE TABLE CoursesGivenBy( 
 	course CHAR(6) PRIMARY KEY,
 	department TEXT NOT NULL,
 	FOREIGN KEY (department) REFERENCES Departments(name)
@@ -72,7 +69,7 @@ CREATE TABLE StudentBranches (
 	student CHAR(10) PRIMARY KEY,
 	branch TEXT NOT NULL,
 	program TEXT NOT NULL,
-	FOREIGN KEY (student,program) REFERENCES Students(idnr,program),
+	FOREIGN KEY (student,program) REFERENCES StudentProgram(idnr,program),
 	FOREIGN KEY (branch, program) REFERENCES Branches(name,program)
 );
 
