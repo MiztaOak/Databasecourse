@@ -2,7 +2,8 @@ CREATE TABLE Students (
 	idnr CHAR(10) PRIMARY KEY,
 	name TEXT NOT NULL, 
 	login TEXT NOT NULL,
-	program TEXT NOT NULL
+	program TEXT NOT NULL,
+	UNIQUE(idnr,program)
 );
 
 CREATE TABLE Branches (
@@ -29,7 +30,7 @@ CREATE TABLE StudentBranches (
 	student CHAR(10) PRIMARY KEY,
 	branch TEXT NOT NULL,
 	program TEXT NOT NULL,
-	FOREIGN KEY (student) REFERENCES Students(idnr),
+	FOREIGN KEY (student,program) REFERENCES Students(idnr,program),
 	FOREIGN KEY (branch, program) REFERENCES Branches(name,program)
 );
 

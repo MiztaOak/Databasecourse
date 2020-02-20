@@ -1,17 +1,15 @@
-Courses(_code_,department,name,credits,capacity)
-	department -> Departments.name
-	
 Departments(_name_,abrv)
+	abrv UNIQUE
 
-Programs(_name,abrv)
-
-ProgramBelongsTo(program,department)
-	program -> Departments.name
-	department -> Programs.name
-
-Prerequisites(
-
-Students(_indr_,name,login,department,program)
+Courses(_code_,prereq,department,name,credits,capacity,classification)
 	department -> Departments.name
-	program -> Programs.name
+	prereq UNIQUE
 
+ProgramCourses(_program_,pAbr,code)
+	code -> Courses.code
+
+Students(_indr_,name,login,department,program,position,grade,registered)
+	department -> Departments.name
+	program -> ProgramCourses.name
+	(program, position) UNIQUE
+	login UNIQUE
