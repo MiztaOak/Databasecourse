@@ -7,8 +7,8 @@ StudentProgram(_student_, program)
 	(student,program) UNIQUE
 
 StudentBranch(_idnr_, name, program)
-	name -> Branches.name
-	program -> Branches.program
+	(branch,program) -> Branches.(name,program)
+	(student,program) -> StudentProgram.(name,program)
 
 Courses(_code_, name, credits)
 
@@ -17,7 +17,7 @@ Prerequisite(_course_, _prerequisite_)
 	prerequisite -> Courses.code
 
 WaitingList(_course_, _student_, position)
-	course -> Courses.code
+	course -> LimitedCourses.code
 	student -> Students.idnr
 	(course,position) UNIQUE
 
@@ -29,7 +29,7 @@ CourseGivenBy(_course_, _department_)
 	course -> Courses.code
 	department -> Department.name
 
-TakenCourse(_course_,_student_, grade)
+Taken(_course_,_student_, grade)
 	course -> Courses.code
 	student -> Students.idnr
 
