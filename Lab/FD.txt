@@ -5,47 +5,23 @@
 	c = course
 	class = classification
 */
-Domain(idnr sName login pName pAbr dName dAbr bName cCode cName credits capacity className position grade)
+Domain(idnr sName login pName pAbr dName dAbr bName cCode cName credits capacity className position grade registered prereq)
 
-pName -> dName //ett program flera departments
+pName -> dName 
 pName -> pAbr
 dName -> dAbr
 dAbr -> dName
-idnr -> pName
-idnr -> bName //may be null
-idnr -> sName
-idnr -> login
-cCode -> dName
-cCode -> cName
-cCode -> credits
-cCode -> capacity //may be null
-idnr cCode -> grade //may be null
-cCode -> className //may be more that one classification
-cCode idnr -> position
-ccode position -> idnr
-bName pName -> cCode
-cCode -> dName
-
-/*
-Input till programet 
-idnr sName login pName pAbr dName dAbr bName cCode cName credits capacity className position grade
-
-pName -> dName
-pName -> pAbr
-dName -> dAbr
-dAbr -> dName
-idnr -> pName
-idnr -> bName
-idnr -> sName
-idnr -> login
-cCode -> dName
-cCode -> cName
-cCode -> credits
-cCode -> capacity 
-cCode idnr -> grade 
-cCode -> className 
+idnr -> pName bName sName login
+cCode -> dName cName credits capacity 
+cCode -> className
+className -> cCode //behövs detta	 
+idnr cCode -> grade 
 cCode idnr -> position
 cCode position -> idnr
 bName pName -> cCode
-cCode -> dName
-*/
+pName -> cCode
+idnr cCode -> registered
+cCode -> prereq
+prereq -> cCode
+
+
