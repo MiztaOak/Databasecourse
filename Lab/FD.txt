@@ -24,4 +24,3 @@ idnr cCode -> registered
 cCode -> prereq
 prereq -> cCode
 
-
