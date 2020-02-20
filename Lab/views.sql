@@ -1,6 +1,6 @@
 CREATE OR REPLACE VIEW BasicInformation AS (
-	SELECT Students.idnr, Students.name, Students.login, StudentBranches.program, StudentBranches.branch as branch 
-	FROM Students FULL OUTER JOIN StudentBranches ON Students.idnr = StudentBranches.student
+	SELECT Students.idnr, Students.name, Students.login, StudentProgram.program as program, StudentBranches.branch as branch 
+	FROM Students FULL OUTER JOIN StudentProgram ON Students.idnr = StudentProgram.student FULL OUTER JOIN StudentBranches ON Students.idnr = StudentBranches.student
 );
 
 
