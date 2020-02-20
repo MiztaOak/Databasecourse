@@ -12,15 +12,16 @@ pName -> pAbr
 dName -> dAbr
 dAbr -> dName
 idnr -> pName bName sName login
+login -> idnr
 cCode -> dName cName credits capacity 
 cCode -> className
-className -> cCode //behövs detta	 
 idnr cCode -> grade 
 cCode idnr -> position
 cCode position -> idnr
 bName pName -> cCode
 pName -> cCode
 idnr cCode -> registered
-cCode -> prereq
-prereq -> cCode
+cCode -> cCode
 
+//något mer som ger idnr, mindre från tec mer från irl
+//user foreign key contraint out side the box för correct branch (multi foreign key)
