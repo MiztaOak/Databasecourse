@@ -1,0 +1,17 @@
+Courses(_code_,department,name,credits,capacity)
+	department -> Departments.name
+	
+Departments(_name_,abrv)
+
+Programs(_name,abrv)
+
+ProgramBelongsTo(program,department)
+	program -> Departments.name
+	department -> Programs.name
+
+Prerequisites(
+
+Students(_indr_,name,login,department,program)
+	department -> Departments.name
+	program -> Programs.name
+

@@ -1,0 +1,95 @@
+1. Attributes:
+cCode dName cName credits capacity
+Keys:
+cCode
+
+Functional dependencies:
+cCode -> dName
+cCode -> cName
+cCode -> credits
+cCode -> capacity
+cCode capacity -> dName
+cCode capacity -> cName
+cCode capacity -> credits
+cCode credits -> dName
+cCode credits -> cName
+cCode credits -> capacity
+cCode credits capacity -> dName
+cCode credits capacity -> cName
+cCode cName -> dName
+cCode cName -> credits
+cCode cName -> capacity
+cCode cName capacity -> dName
+cCode cName capacity -> credits
+cCode cName credits -> dName
+cCode cName credits -> capacity
+cCode cName credits capacity -> dName
+dName cCode -> cName
+dName cCode -> credits
+dName cCode -> capacity
+dName cCode capacity -> cName
+dName cCode capacity -> credits
+dName cCode credits -> cName
+dName cCode credits -> capacity
+dName cCode credits capacity -> cName
+dName cCode cName -> credits
+dName cCode cName -> capacity
+dName cCode cName capacity -> credits
+dName cCode cName credits -> capacity
+
+
+
+2. Attributes:
+idnr pName bName
+Keys:
+idnr
+
+Functional dependencies:
+idnr -> pName
+idnr -> bName
+idnr bName -> pName
+idnr pName -> bName
+
+
+
+3. Attributes:
+cCode position idnr grade registered
+Keys:
+cCode idnr
+cCode position
+
+Functional dependencies:
+cCode idnr -> position
+cCode idnr -> grade
+cCode idnr -> registered
+cCode idnr registered -> position
+cCode idnr registered -> grade
+cCode idnr grade -> position
+cCode idnr grade -> registered
+cCode idnr grade registered -> position
+cCode position -> idnr
+cCode position -> grade
+cCode position -> registered
+cCode position registered -> idnr
+cCode position registered -> grade
+cCode position grade -> idnr
+cCode position grade -> registered
+cCode position grade registered -> idnr
+cCode position idnr -> grade
+cCode position idnr -> registered
+cCode position idnr registered -> grade
+cCode position idnr grade -> registered
+
+
+
+4. Attributes:
+cCode className position prereq
+Keys:
+cCode className position prereq
+
+Functional dependencies:
+none
+Multivalued dependencies:
+cCode ->> className
+className ->> cCode
+cCode ->> prereq
