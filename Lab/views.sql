@@ -23,8 +23,8 @@ CREATE OR REPLACE VIEW Registrations AS(
 );
 
 CREATE OR REPLACE VIEW UnreadMandatory AS(
-	SELECT Students.idnr as student, MandatoryProgram.course FROM Students, MandatoryProgram
-	WHERE Students.program = MandatoryProgram.program
+	SELECT StudentProgram.student as student, MandatoryProgram.course FROM StudentProgram, MandatoryProgram
+	WHERE StudentProgram.program = MandatoryProgram.program
 	UNION
 	SELECT StudentBranches.student, MandatoryBranch.course FROM StudentBranches, MandatoryBranch
 	WHERE StudentBranches.branch = MandatoryBranch.branch AND StudentBranches.program = MandatoryBranch.program
