@@ -1,8 +1,12 @@
 CREATE TABLE Students (
 	idnr CHAR(10) PRIMARY KEY,
 	name TEXT NOT NULL, 
-	login TEXT NOT NULL,
-	FOREIGN KEY (program) REFERENCES Programs(name)
+	login TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE Programs(
+	name TEXT PRIMARY KEY,
+	abr TEXT NOT NULL
 );
 
 CREATE TABLE StudentProgram(
@@ -10,17 +14,12 @@ CREATE TABLE StudentProgram(
 	program TEXT NOT NULL,
 	UNIQUE(student,program),
 	FOREIGN KEY (student) REFERENCES Students(idnr),
-	FOREIGN KEY (Programs) REFERENCES Programs(name)
+	FOREIGN KEY (program) REFERENCES Programs(name)
 );
 
 CREATE TABLE Departments(
 	name TEXT PRIMARY KEY,
 	abr TEXT UNIQUE NOT NULL 
-);
-
-CREATE TABLE Programs(
-	name TEXT PRIMARY KEY,
-	abr TEXT NOT NULL
 );
 
 CREATE TABLE DepartmentHosts(
@@ -32,8 +31,8 @@ CREATE TABLE DepartmentHosts(
 );
 
 CREATE TABLE Branches (
-	name TEXT NOT NULL,
-	program TEXT NOT NULL,
+	name TEXT,
+	program TEXT,
 	PRIMARY KEY(name, program),
 	FOREIGN KEY (program) REFERENCES Programs(program)
 );
