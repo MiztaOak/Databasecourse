@@ -1,7 +1,7 @@
 Departments(_name_,abrv)
 	abrv UNIQUE
 
-Courses(_code_,prereq,department,name,credits,capacity,classification)
+Courses(_code_,department,name,credits,capacity,classification)
 	department -> Departments.name
 	prereq UNIQUE
 

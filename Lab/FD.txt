@@ -5,7 +5,7 @@
 	c = course
 	class = classification
 */
-Domain(idnr sName login pName pAbr dName dAbr bName cCode cName credits capacity className position grade registered prereq)
+Domain(idnr sName login pName pAbr dName dAbr bName cCode cName credits capacity className position grade registered )
 
 pName -> dName 
 pName -> pAbr
@@ -21,10 +21,3 @@ cCode position -> idnr
 bName pName -> cCode
 pName -> cCode
 idnr cCode -> registered
-cCode -> cCode
-
-or
-cCode -> prereq
-
-//något mer som ger idnr, mindre från tec mer från irl
-//user foreign key contraint out side the box för correct branch (multi foreign key)
