@@ -34,14 +34,14 @@ CREATE TABLE Branches (
 	name TEXT,
 	program TEXT,
 	PRIMARY KEY(name, program),
-	FOREIGN KEY (program) REFERENCES Programs(program)
+	FOREIGN KEY (program) REFERENCES Programs(name)
 );
 
 CREATE TABLE Courses (
 	code CHAR(6) PRIMARY KEY,
 	name TEXT NOT NULL,
 	credits FLOAT NOT NULL,
-	CHECK (credits >= 0),
+	CHECK (credits >= 0)
 );
 
 CREATE TABLE LimitedCourses (
@@ -68,7 +68,7 @@ CREATE TABLE StudentBranches (
 	student CHAR(10) PRIMARY KEY,
 	branch TEXT NOT NULL,
 	program TEXT NOT NULL,
-	FOREIGN KEY (student,program) REFERENCES StudentProgram(idnr,program),
+	FOREIGN KEY (student,program) REFERENCES StudentProgram(student,program),
 	FOREIGN KEY (branch, program) REFERENCES Branches(name,program)
 );
 
