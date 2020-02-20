@@ -21,3 +21,5 @@ cCode position -> idnr
 bName pName -> cCode
 pName -> cCode
 idnr cCode -> registered
+
+--cCode -> cCode is the FD for prerequisite, but it is trivial, so it's left out

@@ -68,7 +68,7 @@ CREATE TABLE CoursesGivenBy(
 CREATE TABLE Prerequisites (
 	course CHAR(6),
 	prerequisite CHAR(6) NOT NULL,
-	PRIMARY KEY (course,prerequist),
+	PRIMARY KEY (course,prerequisite),
 	FOREIGN KEY (course) REFERENCES Courses(code),
 	FOREIGN KEY (prerequisite) REFERENCES Courses(code)
 );
