@@ -48,15 +48,13 @@ CREATE OR REPLACE FUNCTION removeFromList() RETURNS trigger AS $$
 	BEGIN
 		IF OLD.status = 'waiting' THEN
 			DELETE FROM WaitingList WHERE course = OLD.course AND student = OLD.student;
-			--fix positions should we make small triggers for waiting list that fix the postions or is that not allowed?
 		ELSE
 			DELETE FROM Registered WHERE course = OLD.course AND student = OLD.student;
 			IF ((SELECT COUNT(student) FROM Registered WHERE course = OLD.course) < (SELECT capacity FROM LimitedCourses WHERE code = OLD.course)) THEN
-					INSERT INTO Registered VALUES (SELECT student,course FROM WaitingList WHERE positions = 1 AND course = OLD.course); --this will not work
+				IF(SELECT student FROM WaitingList WHERE course = OLD.course AND position = 1) IS NOT NULL THEN
+					INSERT INTO Registered VALUES (SELECT student,course FROM WaitingList WHERE positions = 1 AND course = OLD.course);
 					DELETE FROM WaitingList WHERE positions = 1 AND course = OLD.course;
-					--fix postions
-					RAISE EXCEPTION 'that course is full atm';
-					RETURN NULL;
+				END IF;
 			END IF;
 		END IF;
 		RETURN OLD;
