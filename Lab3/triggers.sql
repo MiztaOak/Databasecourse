@@ -28,16 +28,12 @@ CREATE OR REPLACE FUNCTION registerToList() RETURNS trigger AS $$
 		-- is limited
 		IF (SELECT code FROM LimitedCourses WHERE code = NEW.course) IS NOT NULL THEN
 			IF ((SELECT COUNT(student) FROM Registered WHERE course = NEW.course) >= (SELECT capacity FROM LimitedCourses WHERE code = NEW.course))
-				THEN RAISE EXCEPTION 'that course is full atm';
-				RETURN NULL;
+				INSERT INTO WaitingList VALUES (NEW.student,NEW.course);
+				RETURN NEW;
 			END IF;
-			RAISE EXCEPTION 'limited course but ok';
-			RETURN NULL;
 		END IF;
 		INSERT INTO Registered VALUES (NEW.Student,New.Course);
-		-- RETURN NEW;
-		RAISE EXCEPTION 'should be ok to add';
-		RETURN NULL;
+		RETURN NEW;
 	END;
 $$ LANGUAGE  plpgsql;
 
