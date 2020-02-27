@@ -1,14 +1,19 @@
 CREATE OR REPLACE FUNCTION addToList() RETURNS trigger AS $$
     DECLARE 
-        prerequisitesCount Integer := SELECT COUNT(prerequisite) FROM prerequisites WHERE course = NEW.course;
-        takenPrerequisitesCount Integer := SELECT COUNT(course) FROM prerequisites, taken WHERE student = NEW.student AND prerequisites.course = NEW.course AND taken.course = prerequisites.prerequisite;
+        prerequisitesCount Integer;
+        -- := SELECT COUNT(prerequisite) FROM prerequisites WHERE course = NEW.course;
+        takenPrerequisitesCount Integer;
+        -- := SELECT COUNT(course) FROM prerequisites, taken WHERE student = NEW.student AND prerequisites.course = NEW.course AND taken.course = prerequisites.prerequisite;
     BEGIN
+        SELECT COUNT(prerequisite) INTO prerequisitesCount FROM prerequisites WHERE course = NEW.course;
+        SELECT COUNT(prerequisites.course) INTO takenPrerequisitesCount FROM prerequisites, taken WHERE student = NEW.student AND prerequisites.course = NEW.course AND taken.course = prerequisites.prerequisite;
+
         IF (prerequisitesCount <> takenPrerequisitesCount) THEN
             RAISE EXCEPTION 'Has not taken prerequisites';
             RETURN NULL;
         END IF;
         IF (SELECT student FROM Registrations WHERE student = NEW.student AND course = NEW.course) IS NOT NULL THEN
-            RAISE EXCEPTION '% already on course';
+            RAISE EXCEPTION 'already on course';
             RETURN NULL;
         END IF;
         INSERT INTO WaitingList VALUES (NEW.student, NEW.course);
