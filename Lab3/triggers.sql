@@ -1,10 +1,24 @@
 CREATE OR REPLACE FUNCTION registerToList() RETURNS trigger AS $$
+	DECLARE 
+        prerequisitesCount Integer;
+        takenPrerequisitesCount Integer;
 	BEGIN
+		--Amount of prerequisites required
+		SELECT COUNT(prerequisite) INTO prerequisitesCount FROM prerequisites WHERE course = NEW.course;
+		--Amount of taken courses overlapping with prerequisites
+        SELECT COUNT(prerequisites.course) INTO takenPrerequisitesCount FROM prerequisites, taken WHERE student = NEW.student AND prerequisites.course = NEW.course AND taken.course = prerequisites.prerequisite;
 
+		--If amount of prerequisites taken is not equal the amount of courses in both taken and prerequisites the student has not taken all the prerequisites.
+		IF (prerequisitesCount <> takenPrerequisitesCount) THEN
+            RAISE EXCEPTION 'Has not taken prerequisites';
+            RETURN NULL;
+        END IF;
+		--Check if the student has already taken the course
 		IF (SELECT student FROM Taken WHERE course = New.course AND student = New.Student) IS NOT NULL THEN
 			RAISE EXCEPTION 'already taken course';
 			RETURN NULL;
 		END IF;
+		--Check if the student is already registred on the course
 		IF (SELECT student FROM Registrations WHERE student = NEW.Student AND course = NEW.course) IS NOT NULL THEN
 			RAISE EXCEPTION 'already registered to the course';
 			RETURN NULL;
