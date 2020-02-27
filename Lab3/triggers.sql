@@ -27,7 +27,7 @@ CREATE OR REPLACE FUNCTION registerToList() RETURNS trigger AS $$
 		
 		-- is limited
 		IF (SELECT code FROM LimitedCourses WHERE code = NEW.course) IS NOT NULL THEN
-			IF ((SELECT COUNT(student) FROM Registered WHERE course = NEW.course) >= (SELECT capacity FROM LimitedCourses WHERE code = NEW.course))
+			IF ((SELECT COUNT(student) FROM Registered WHERE course = NEW.course) >= (SELECT capacity FROM LimitedCourses WHERE code = NEW.course)) THEN
 				INSERT INTO WaitingList VALUES (NEW.student,NEW.course);
 				RETURN NEW;
 			END IF;
@@ -41,15 +41,23 @@ DROP TRIGGER IF EXISTS check_can_register ON Registrations;
 CREATE TRIGGER check_can_register INSTEAD OF INSERT ON Registrations FOR EACH ROW EXECUTE PROCEDURE registerToList();
 
 CREATE OR REPLACE FUNCTION removeFromList() RETURNS trigger AS $$
+	DECLARE 
+		firstStudent Text;
+		firstCourse Text;
 	BEGIN
+		SELECT student INTO firstStudent FROM WaitingList WHERE position = 1 AND course = OLD.course;
+		SELECT course INTO firstCourse FROM WaitingList WHERE position = 1 AND course = OLD.course;
+
+
+
 		IF OLD.status = 'waiting' THEN
 			DELETE FROM WaitingList WHERE course = OLD.course AND student = OLD.student;
 		ELSE
 			DELETE FROM Registered WHERE course = OLD.course AND student = OLD.student;
 			IF ((SELECT COUNT(student) FROM Registered WHERE course = OLD.course) < (SELECT capacity FROM LimitedCourses WHERE code = OLD.course)) THEN
 				IF(SELECT student FROM WaitingList WHERE course = OLD.course AND position = 1) IS NOT NULL THEN
-					INSERT INTO Registered VALUES (SELECT student,course FROM WaitingList WHERE positions = 1 AND course = OLD.course);
-					DELETE FROM WaitingList WHERE positions = 1 AND course = OLD.course;
+					INSERT INTO Registered VALUES (firstStudent,firstCourse);
+					DELETE FROM WaitingList WHERE position = 1 AND course = OLD.course;
 				END IF;
 			END IF;
 		END IF;
@@ -73,5 +81,5 @@ CREATE OR REPLACE FUNCTION delete_from_waitinglist() RETURNS trigger AS $$
 	END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS update_positions ON Registrations;
+DROP TRIGGER IF EXISTS update_positions ON WaitingList;
 CREATE TRIGGER update_positions AFTER DELETE ON WaitingList FOR EACH ROW EXECUTE FUNCTION delete_from_waitinglist();
