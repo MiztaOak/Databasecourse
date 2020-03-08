@@ -34,19 +34,28 @@ public class PortalConnection {
 
     // Register a student on a course, returns a tiny JSON document (as a String)
     public String register(String student, String courseCode){
-      
-      // placeholder, remove along with this comment. 
-      return "{\"success\":false, \"error\":\"Registration is not implemented yet :(\"}";
-      
-      // Here's a bit of useful code, use it or delete it 
-      // } catch (SQLException e) {
-      //    return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
-      // }     
+        String query = "INSERT INTO Registrations VALUES (?,?);";
+        try(PreparedStatement ps = conn.prepareStatement(query);){
+            ps.setString(1,student);
+            ps.setString(2,courseCode);
+            ps.execute();
+            return "{\"success\":true}";
+        } catch (SQLException e) {
+            return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
+        }
     }
 
     // Unregister a student from a course, returns a tiny JSON document (as a String)
     public String unregister(String student, String courseCode){
-      return "{\"success\":false, \"error\":\"Unregistration is not implemented yet :(\"}";
+        String query = "DELETE FROM Registrations WHERE student = ? AND course = ?;";
+        try(PreparedStatement ps = conn.prepareStatement(query);){
+            ps.setString(1,student);
+            ps.setString(2,courseCode);
+            ps.execute();
+            return "{\"success\":true}";
+        }catch (SQLException e){
+            return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
+        }
     }
 
     // Return a JSON document containing lots of information about a student, it should validate against the schema found in information_schema.json

@@ -292,5 +292,5 @@ CREATE OR REPLACE VIEW PathToGraduation AS(
 );
 
 CREATE OR REPLACE VIEW CourseQueuePositions AS(
-	SELECT * FROM WaitingList ORDER BY course
+	SELECT student, course, postion AS place FROM WaitingList ORDER BY course
 );

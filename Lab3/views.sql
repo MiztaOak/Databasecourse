@@ -79,7 +79,7 @@ CREATE OR REPLACE VIEW PathToGraduation AS(
 	FROM fullTable
 );
 
--- needs to be placed in setup
+
 CREATE OR REPLACE VIEW CourseQueuePositions AS(
-	SELECT * FROM WaitingList ORDER BY course
+	SELECT student, course, position AS place FROM WaitingList ORDER BY course
 );
