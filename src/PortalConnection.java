@@ -39,6 +39,7 @@ public class PortalConnection {
             ps.setString(1,student);
             ps.setString(2,courseCode);
             ps.execute();
+            ps.close();
             return "{\"success\":true}";
         } catch (SQLException e) {
             return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
@@ -52,6 +53,7 @@ public class PortalConnection {
             ps.setString(1,student);
             ps.setString(2,courseCode);
             ps.execute();
+            ps.close();
             return "{\"success\":true}";
         }catch (SQLException e){
             return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
@@ -60,22 +62,33 @@ public class PortalConnection {
 
     // Return a JSON document containing lots of information about a student, it should validate against the schema found in information_schema.json
     public String getInfo(String student) throws SQLException{
-        
+
         try(PreparedStatement st = conn.prepareStatement(
             // replace this with something more useful
-            "SELECT jsonb_build_object('student',idnr,'name',name) AS jsondata FROM BasicInformation WHERE idnr=?"
+            "WITH Finished as (SELECT json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code," +
+                    "'grade',grade,'credits',Courses.credits)) AS finishedArray FROM FinishedCourses,Courses " +
+                    "WHERE student = ? AND FinishedCourses.course = Courses.Code), Registered AS " +
+                    "(SELECT json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code,'status',status)) AS " +
+                    "registeredArray FROM Registrations,Courses WHERE student = ? AND Registrations.course = Courses.Code) " +
+                    "SELECT jsonb_build_object('student',idnr,'name',name,'login',login,'program',program,'branch'," +
+                    "branch,'finished',finishedArray,'registered',registeredArray,'seminarCourses',seminarCourses," +
+                    "'mathCredits',mathCredits,'researchCredits',researchCredits,'totalCredits',totalCredits," +
+                    "'canGraduate',qualified) AS jsondata FROM BasicInformation,PathToGraduation,Finished," +
+                    "Registered WHERE BasicInformation.idnr='4444444444' AND BasicInformation.idnr = PathToGraduation.student"
             );){
-            
+
             st.setString(1, student);
-            
+            st.setString(2, student);
+
             ResultSet rs = st.executeQuery();
-            
+
             if(rs.next())
               return rs.getString("jsondata");
             else
-              return "{\"student\":\"does not exist :(\"}"; 
-            
-        } 
+              return "{\"student\":\"does not exist :(\"}";
+
+        }
+
     }
 
     // This is a hack to turn an SQLException into a JSON string error message. No need to change.
