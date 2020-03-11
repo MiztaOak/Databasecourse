@@ -48,7 +48,13 @@ CREATE OR REPLACE FUNCTION removeFromList() RETURNS trigger AS $$
 		SELECT student INTO firstStudent FROM WaitingList WHERE position = 1 AND course = OLD.course;
 		SELECT course INTO firstCourse FROM WaitingList WHERE position = 1 AND course = OLD.course;
 
-
+		--doesn't work. Not sure why.
+		--IF EXISTS(SELECT 1 FROM Registered WHERE student = OLD.student AND course = OLD.course) THEN
+		--	IF EXISTS(SELECT 1 FROM WaitingList WHERE student = OLD.student AND course = OLD.course) THEN
+	--			RAISE EXCEPTION 'not registered on the course';
+	--			RETURN NULL;
+	--		END IF;
+	--	END IF;
 
 		IF OLD.status = 'waiting' THEN
 			DELETE FROM WaitingList WHERE course = OLD.course AND student = OLD.student;
