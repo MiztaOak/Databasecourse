@@ -43,26 +43,16 @@ CREATE TRIGGER check_can_register INSTEAD OF INSERT ON Registrations FOR EACH RO
 CREATE OR REPLACE FUNCTION removeFromList() RETURNS trigger AS $$
 	DECLARE 
 		firstStudent Text;
-		firstCourse Text;
 	BEGIN
 		SELECT student INTO firstStudent FROM WaitingList WHERE position = 1 AND course = OLD.course;
-		SELECT course INTO firstCourse FROM WaitingList WHERE position = 1 AND course = OLD.course;
-
-		--doesn't work. Not sure why.
-		--IF EXISTS(SELECT 1 FROM Registered WHERE student = OLD.student AND course = OLD.course) THEN
-		--	IF EXISTS(SELECT 1 FROM WaitingList WHERE student = OLD.student AND course = OLD.course) THEN
-	--			RAISE EXCEPTION 'not registered on the course';
-	--			RETURN NULL;
-	--		END IF;
-	--	END IF;
 
 		IF OLD.status = 'waiting' THEN
 			DELETE FROM WaitingList WHERE course = OLD.course AND student = OLD.student;
 		ELSE
 			DELETE FROM Registered WHERE course = OLD.course AND student = OLD.student;
 			IF ((SELECT COUNT(student) FROM Registered WHERE course = OLD.course) < (SELECT capacity FROM LimitedCourses WHERE code = OLD.course)) THEN
-				IF(SELECT student FROM WaitingList WHERE course = OLD.course AND position = 1) IS NOT NULL THEN
-					INSERT INTO Registered VALUES (firstStudent,firstCourse);
+				IF firstStudent IS NOT NULL THEN
+					INSERT INTO Registered VALUES (firstStudent,OLD.course);
 					DELETE FROM WaitingList WHERE position = 1 AND course = OLD.course;
 				END IF;
 			END IF;

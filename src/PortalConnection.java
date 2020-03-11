@@ -52,9 +52,12 @@ public class PortalConnection {
         try(PreparedStatement ps = conn.prepareStatement(query);){
             ps.setString(1,student);
             ps.setString(2,courseCode);
-            ps.execute();
+            int n = ps.executeUpdate();
             ps.close();
-            return "{\"success\":true}";
+            if(n == 0)
+                return "{\"success\":false, \"error\":\" Student " + student + " is not registered to the course " + courseCode + "\"}";
+            else
+                return "{\"success\":true}";
         }catch (SQLException e){
             return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
         }
@@ -65,20 +68,21 @@ public class PortalConnection {
 
         try(PreparedStatement st = conn.prepareStatement(
             // replace this with something more useful
-            "WITH Finished as (SELECT json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code," +
-                    "'grade',grade,'credits',Courses.credits)) AS finishedArray FROM FinishedCourses,Courses " +
+            "WITH Finished as (SELECT COALESCE(json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code," +
+                    "'grade',grade,'credits',Courses.credits)),'[]'::json) AS finishedArray FROM FinishedCourses,Courses " +
                     "WHERE student = ? AND FinishedCourses.course = Courses.Code), Registered AS " +
-                    "(SELECT json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code,'status',status)) AS " +
-                    "registeredArray FROM Registrations,Courses WHERE student = ? AND Registrations.course = Courses.Code) " +
+                    "(SELECT COALESCE(json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code,'status',status)),'[]'::json)" +
+                    "AS registeredArray FROM Registrations,Courses WHERE student = ? AND Registrations.course = Courses.Code) " +
                     "SELECT jsonb_build_object('student',idnr,'name',name,'login',login,'program',program,'branch'," +
                     "branch,'finished',finishedArray,'registered',registeredArray,'seminarCourses',seminarCourses," +
                     "'mathCredits',mathCredits,'researchCredits',researchCredits,'totalCredits',totalCredits," +
                     "'canGraduate',qualified) AS jsondata FROM BasicInformation,PathToGraduation,Finished," +
-                    "Registered WHERE BasicInformation.idnr='4444444444' AND BasicInformation.idnr = PathToGraduation.student"
+                    "Registered WHERE BasicInformation.idnr=? AND BasicInformation.idnr = PathToGraduation.student"
             );){
 
             st.setString(1, student);
             st.setString(2, student);
+            st.setString(3, student);
 
             ResultSet rs = st.executeQuery();
 
