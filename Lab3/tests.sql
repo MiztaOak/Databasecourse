@@ -27,10 +27,21 @@ DELETE FROM Registrations WHERE student = '3333333333' AND course = 'CCC222';
 
 SELECT * FROM CourseQueuePositions;
 
+-- Remove the person that is registered to the course and adding them back to the course verifying that they end up at the end of the waitinglist 
+DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
+INSERT INTO Registrations VALUES ('2222222222', 'CCC222');
+SELECT * FROM CourseQueuePositions;
+
+--Adding more people to the course
+INSERT INTO Registered VALUES ('3333333333','CCC222');
+
+--Course is now overfull so removing one person should not change the queue
+DELETE FROM Registrations WHERE student = '5555555555' AND course = 'CCC222';
+SELECT * FROM CourseQueuePositions;
+
 DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
 DELETE FROM Registrations WHERE student = '1111111111' AND course = 'CCC222';
 DELETE FROM Registrations WHERE student = '4444444444' AND course = 'CCC222';
-
 
 --Register student on course which requires prerequisites. Should fail.
 INSERT INTO Registrations VALUES ('1111111111', 'CCC333');

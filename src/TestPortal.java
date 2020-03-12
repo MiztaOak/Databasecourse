@@ -61,12 +61,14 @@ public class TestPortal {
           pause();
 
           //unregister a student from a overfull course and show that no new student got their spot
-          System.out.println(c.unregister("2222222222","CCC333"));
+          System.out.println(c.unregister("2222222222","CCC222"));
           prettyPrint(c.getInfo("4444444444"));
           prettyPrint(c.getInfo("5555555555"));
-          
+
           //unregister with sql injection causing all registrations to be removed
-          //god plz help
+          System.out.println(c.unregister("1111111111","CCC111'; DELETE FROM WaitingList; DELETE FROM Registered;DELETE FROM Registrations WHERE student = '1111111111"));
+          prettyPrint(c.getInfo("1111111111"));
+          prettyPrint(c.getInfo("2222222222"));
       } catch (ClassNotFoundException e) {
          System.err.println("ERROR!\nYou do not have the Postgres JDBC driver (e.g. postgresql-42.2.8.jar) in your runtime classpath!");
       } catch (Exception e) {

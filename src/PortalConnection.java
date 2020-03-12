@@ -48,11 +48,9 @@ public class PortalConnection {
 
     // Unregister a student from a course, returns a tiny JSON document (as a String)
     public String unregister(String student, String courseCode){
-        String query = "DELETE FROM Registrations WHERE student = ? AND course = ?;";
-        try(PreparedStatement ps = conn.prepareStatement(query);){
-            ps.setString(1,student);
-            ps.setString(2,courseCode);
-            int n = ps.executeUpdate();
+        String query = "DELETE FROM Registrations WHERE student = '" + student + "'  AND course = '" + courseCode + "';";
+        try(Statement ps = conn.createStatement();){
+            int n = ps.executeUpdate(query);
             ps.close();
             if(n == 0)
                 return "{\"success\":false, \"error\":\" Student " + student + " is not registered to the course " + courseCode + "\"}";

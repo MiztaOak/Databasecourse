@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION registerToList() RETURNS trigger AS $$
 		--Amount of prerequisites required
 		SELECT COUNT(prerequisite) INTO prerequisitesCount FROM prerequisites WHERE course = NEW.course;
 		--Amount of taken courses overlapping with prerequisites
-        SELECT COUNT(prerequisites.course) INTO takenPrerequisitesCount FROM prerequisites, taken WHERE student = NEW.student AND prerequisites.course = NEW.course AND taken.course = prerequisites.prerequisite;
+        SELECT COUNT(prerequisites.course) INTO takenPrerequisitesCount FROM prerequisites, taken WHERE student = NEW.student AND prerequisites.course = NEW.course AND taken.course = prerequisites.prerequisite AND taken.grade != 'U';
 
 		--If amount of prerequisites taken is not equal the amount of courses in both taken and prerequisites the student has not taken all the prerequisites.
 		IF (prerequisitesCount <> takenPrerequisitesCount) THEN
@@ -64,11 +64,17 @@ $$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS student_unregister ON Registrations;
 CREATE TRIGGER student_unregister INSTEAD OF DELETE ON Registrations FOR EACH ROW EXECUTE PROCEDURE removeFromList();
 
-CREATE OR REPLACE FUNCTION next_postion() RETURNS INT AS $$
-	SELECT COALESCE(MAX(position),0)+1 FROM WaitingList
-$$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION inser_waitingList() RETURNS trigger AS $$
+	DECLARE newPos INTEGER;
+	BEGIN
+		SELECT COALESCE(MAX(position),0)+1 INTO newPos FROM WaitingList WHERE course = NEW.course;
+		New.position := newPos;
+		return New;
+	END;
+$$ LANGUAGE plpgsql;
 
-ALTER TABLE WaitingList ALTER position SET DEFAULT next_postion();
+DROP TRIGGER IF EXISTS set_position_insert ON WaitingList;
+CREATE TRIGGER set_position_insert BEFORE INSERT ON WaitingList FOR EACH ROW EXECUTE PROCEDURE inser_waitingList();
 
 CREATE OR REPLACE FUNCTION delete_from_waitinglist() RETURNS trigger AS $$
 	BEGIN
