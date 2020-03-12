@@ -32,11 +32,11 @@ DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
 INSERT INTO Registrations VALUES ('2222222222', 'CCC222');
 SELECT * FROM CourseQueuePositions;
 
---Adding more people to the course
+--Adding more people to the course without using the trigger
 INSERT INTO Registered VALUES ('3333333333','CCC222');
 
 --Course is now overfull so removing one person should not change the queue
-DELETE FROM Registrations WHERE student = '5555555555' AND course = 'CCC222';
+DELETE FROM Registrations WHERE student = '3333333333' AND course = 'CCC222';
 SELECT * FROM CourseQueuePositions;
 
 DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
@@ -56,7 +56,7 @@ INSERT INTO Registrations VALUES('1111111111','CCC111');
 INSERT INTO Registrations VALUES ('1111111111', 'CCC333');
 
 --Give student last prerequisite.
-INSERT INTO Taken VALUES('1111111111', 'CCC222','U');
+INSERT INTO Taken VALUES('1111111111', 'CCC222','5');
 
 --Attempt to register again. Should be accepted.
 INSERT INTO Registrations VALUES ('1111111111', 'CCC333');
@@ -67,4 +67,3 @@ SELECT * FROM Registrations;
 DELETE FROM Registrations WHERE student = '1111111111' AND course = 'CCC333';
 DELETE FROM Taken WHERE student = '1111111111' AND course = 'CCC222';
 DELETE FROM Taken WHERE student = '1111111111' AND course = 'CCC111';
-
