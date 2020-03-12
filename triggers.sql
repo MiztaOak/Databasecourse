@@ -78,7 +78,7 @@ CREATE TRIGGER set_position_insert BEFORE INSERT ON WaitingList FOR EACH ROW EXE
 
 CREATE OR REPLACE FUNCTION delete_from_waitinglist() RETURNS trigger AS $$
 	BEGIN
-		UPDATE WaitingList SET position = position-1 WHERE position >= OLD.position;
+		UPDATE WaitingList SET position = position-1 WHERE position >= OLD.position AND course = OLD.course;
 		RETURN NULL;
 	END;
 $$ LANGUAGE plpgsql;
