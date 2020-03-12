@@ -1,0 +1,12 @@
+DELETE FROM Registrations;
+
+-- overfull course
+INSERT INTO Registered VALUES ('2222222222','CCC222');
+INSERT INTO Registered VALUES ('3333333333','CCC222');
+INSERT INTO Registrations VALUES ('4444444444','CCC222');
+INSERT INTO Registrations VALUES ('5555555555','CCC222');
+
+-- course with queue
+INSERT INTO Registrations VALUES ('1111111111','CCC333');
+INSERT INTO Registrations VALUES ('2222222222','CCC333');
+INSERT INTO Registrations VALUES ('3333333333','CCC333');

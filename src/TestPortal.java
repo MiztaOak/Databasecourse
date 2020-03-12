@@ -8,45 +8,65 @@ public class TestPortal {
    public static void main(String[] args) {
       try{
          PortalConnection c = new PortalConnection();
-   
+
+         /*
+            Some notes to help:
+            CCC222 - overfull course
+            CCC333 - normal full course
+
+            CCC444 - course with prereq
+            CCC111 - standard course
+
+            1111111111 - student that gets manipulated
+
+          */
+
          // Write your tests here. Add/remove calls to pause() as desired. 
          // Use println instead of prettyPrint to get more compact output (if your raw JSON is already readable)
 
-          System.out.println(c.unregister("2222222222", "CCC333"));
-          pause();
-
-          System.out.println(c.unregister("1111111111", "CCC111"));
-          pause();
-          
-          System.out.println(c.unregister("1111111111", "CCC444"));
-          pause();
-
-          System.out.println(c.register("1111111111", "CCC111"));
-          pause();
-
-          System.out.println(c.register("1111111111", "CCC444"));
-          pause();
-
+          //show basic info
           prettyPrint(c.getInfo("1111111111"));
           pause();
 
-          System.out.println(c.unregister("1111111111", "CCC444"));
+          //register to normal course
+          System.out.println(c.register("1111111111","CCC111"));
+          prettyPrint(c.getInfo("1111111111"));
           pause();
 
-          prettyPrint(c.getInfo("2222222222"));
+          //try to register to course that is already registered to
+          System.out.println(c.register("1111111111","CCC111"));
           pause();
 
-          System.out.println(c.register("2222222222", "CCC333"));
+          // unregister twice showing that the first work but the second one fails
+          System.out.println(c.unregister("1111111111","CCC111"));
+          System.out.println(c.unregister("1111111111","CCC111"));
+          prettyPrint(c.getInfo("1111111111"));
           pause();
 
-          System.out.println(c.unregister("2222222222", "CCC444"));
+          //register for course lacking prerequisites and showing it fails
+          System.out.println(c.register("1111111111","CCC444"));
           pause();
 
-          prettyPrint(c.getInfo("2222222222"));
+          //unregister student from a course that has at least two students waiting in line for and the reregister
+          //for the course showing that your last in line now
+          System.out.println(c.unregister("1111111111","CCC333"));
+          System.out.println(c.register("1111111111","CCC333"));
+          prettyPrint(c.getInfo("1111111111"));
+          pause();
 
+          //unregister and then reregister the student showing that they end up at the end of the queue
+          System.out.println(c.unregister("1111111111","CCC333"));
+          System.out.println(c.register("1111111111","CCC333"));
+          prettyPrint(c.getInfo("1111111111"));
+          pause();
 
-
-      
+          //unregister a student from a overfull course and show that no new student got their spot
+          System.out.println(c.unregister("2222222222","CCC333"));
+          prettyPrint(c.getInfo("4444444444"));
+          prettyPrint(c.getInfo("5555555555"));
+          
+          //unregister with sql injection causing all registrations to be removed
+          //god plz help
       } catch (ClassNotFoundException e) {
          System.err.println("ERROR!\nYou do not have the Postgres JDBC driver (e.g. postgresql-42.2.8.jar) in your runtime classpath!");
       } catch (Exception e) {

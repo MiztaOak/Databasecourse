@@ -68,11 +68,12 @@ public class PortalConnection {
 
         try(PreparedStatement st = conn.prepareStatement(
             // replace this with something more useful
-            "WITH Finished as (SELECT COALESCE(json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code," +
+            "WITH RegData as (SELECT * FROM Registrations FULL OUTER JOIN CourseQueuePositions USING (student,course))," +
+                    "Finished as (SELECT COALESCE(json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code," +
                     "'grade',grade,'credits',Courses.credits)),'[]'::json) AS finishedArray FROM FinishedCourses,Courses " +
                     "WHERE student = ? AND FinishedCourses.course = Courses.Code), Registered AS " +
-                    "(SELECT COALESCE(json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code,'status',status)),'[]'::json)" +
-                    "AS registeredArray FROM Registrations,Courses WHERE student = ? AND Registrations.course = Courses.Code) " +
+                    "(SELECT COALESCE(json_agg(jsonb_build_object('course',Courses.name,'code',Courses.code,'status',status,'position', place)),'[]'::json)" +
+                    "AS registeredArray FROM RegData,Courses WHERE student = ? AND RegData.course = Courses.Code) " +
                     "SELECT jsonb_build_object('student',idnr,'name',name,'login',login,'program',program,'branch'," +
                     "branch,'finished',finishedArray,'registered',registeredArray,'seminarCourses',seminarCourses," +
                     "'mathCredits',mathCredits,'researchCredits',researchCredits,'totalCredits',totalCredits," +
