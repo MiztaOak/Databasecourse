@@ -34,9 +34,11 @@ SELECT * FROM CourseQueuePositions;
 
 --Adding more people to the course without using the trigger
 INSERT INTO Registered VALUES ('3333333333','CCC222');
+SELECT * FROM Registrations;
 
 --Course is now overfull so removing one person should not change the queue
 DELETE FROM Registrations WHERE student = '3333333333' AND course = 'CCC222';
+SELECT * FROM Registrations;
 SELECT * FROM CourseQueuePositions;
 
 DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';

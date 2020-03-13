@@ -54,8 +54,11 @@ public class TestPortal {
           prettyPrint(c.getInfo("1111111111"));
           pause();
 
-          //unregister and then reregister the student showing that they end up at the end of the queue
+          //unregister and then reregister the student showing that they first removed and then ends up at the end
+          //of the queue again
           System.out.println(c.unregister("1111111111","CCC333"));
+          prettyPrint(c.getInfo("1111111111"));
+          pause();
           System.out.println(c.register("1111111111","CCC333"));
           prettyPrint(c.getInfo("1111111111"));
           pause();
@@ -64,6 +67,7 @@ public class TestPortal {
           System.out.println(c.unregister("2222222222","CCC222"));
           prettyPrint(c.getInfo("4444444444"));
           prettyPrint(c.getInfo("5555555555"));
+          pause();
 
           //unregister with sql injection causing all registrations to be removed
           System.out.println(c.unregister("1111111111","CCC111'; DELETE FROM WaitingList; DELETE FROM Registered;DELETE FROM Registrations WHERE student = '1111111111"));
